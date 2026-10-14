@@ -16,7 +16,13 @@ class RecoverPasswordController extends Controller
         $this->validate($request,[
             'email'=>'required|email',
         ]);
-        return back();
+
+        $notification = array(
+            'message'=>"If this email exists, a password reset link will be sent.",
+            'alert-type'=>'info'
+        );
+
+        return back()->with($notification);
     }
     
 }

@@ -36,7 +36,15 @@ class CustomerController extends Controller
             'comment'=>'max:200',
             'gender'=>'required'
         ]);
-        Customer::create($request->all());
+        Customer::create($request->only([
+            'fullname',
+            'address',
+            'phone',
+            'city',
+            'email',
+            'comment',
+            'gender',
+        ]));
         $notification = array(
             'message'=>"Customer has beed added successfully!!",
             'alert-type'=>'success'

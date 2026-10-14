@@ -116,7 +116,9 @@
 			</div>
 			<div class="card-content collapse show">
 				<div class="card-body">
-					{!! $pieChart->render() !!}
+					<div class="chart-container" style="position: relative; height: 320px; width: 100%;">
+						<canvas id="resourceChart"></canvas>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -161,4 +163,21 @@
     <!-- END: Page Vendor JS-->
 	<script src="{{asset('app-assets/js/scripts/pages/dashboard-ecommerce.min.js')}}"></script>
 	<script src="{{asset('app-assets/vendors/js/charts/chart.min.js')}}"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var canvas = document.getElementById('resourceChart');
+			if (!canvas || typeof Chart === 'undefined') {
+				return;
+			}
+			new Chart(canvas, {
+				type: 'pie',
+				data: @json($chartData),
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					legend: { position: 'bottom' }
+				}
+			});
+		});
+	</script>
 @endpush

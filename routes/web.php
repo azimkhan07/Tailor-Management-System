@@ -16,7 +16,6 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\IncomeCategoryController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\MeasurementPartController;
-use App\Http\Controllers\CustomerMeasurementController;
 use App\Http\Controllers\Auth\RecoverPasswordController;
 
 /*
@@ -34,6 +33,7 @@ Route::group(['middleware'=>['guest']],function (){
     Route::get('login',[LoginController::class,'index'])->name('login');
     Route::post('login',[LoginController::class,'login']);
     Route::get('recover-password',[RecoverPasswordController::class,'index'])->name('reset-password');
+    Route::post('recover-password',[RecoverPasswordController::class,'resetPassword']);
 
 });
 

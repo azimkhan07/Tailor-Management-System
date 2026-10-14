@@ -4,7 +4,11 @@ We will send you a link to reset password.
 @endsection
 
 @section('content')
-<form class="form-horizontal" action="" validate>
+@if (session('message'))
+	<x-alerts.danger :error="session('message')" />
+@endif
+<form class="form-horizontal" method="post" action="{{ route('reset-password') }}" validate>
+	@csrf
 	<fieldset class="form-group position-relative has-icon-left">
 		<input type="email" class="form-control" id="user-email" placeholder="Your Email Address" name="email">
 		<div class="form-control-position">

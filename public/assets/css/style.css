@@ -1,3 +1,128 @@
-.bg-full-screen-image{
+.bg-full-screen-image {
 	background-image: url('../../app-assets/images/backgrounds/bg.png') !important;
+}
+
+/* ------------------------------------------------------------------
+ | Base safeguards against horizontal overflow on small screens
+ * ------------------------------------------------------------------ */
+html,
+body {
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+img,
+canvas {
+	max-width: 100%;
+	height: auto;
+}
+
+/* ------------------------------------------------------------------
+ | DataTables: allow the table area to scroll instead of breaking
+ | the layout. The Responsive extension collapses columns, this is a
+ | fallback for the smallest screens.
+ * ------------------------------------------------------------------ */
+.card-dashboard .dataTables_wrapper {
+	width: 100%;
+}
+
+@media (max-width: 767.98px) {
+	.card-dashboard .dataTables_wrapper {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.card-dashboard table.dataTable {
+		min-width: 520px;
+	}
+
+	/* DataTables controls stack nicely on phones */
+	.dt-buttons {
+		float: none !important;
+		display: block;
+		text-align: left;
+		margin-bottom: .5rem;
+	}
+
+	.dt-buttons .dt-button {
+		margin: 0 .25rem .35rem 0 !important;
+	}
+
+	.dataTables_filter {
+		float: none !important;
+		text-align: left;
+	}
+
+	.dataTables_filter input {
+		display: inline-block;
+		width: 100%;
+		margin-left: 0 !important;
+	}
+
+	.dataTables_length {
+		float: none !important;
+		text-align: left;
+	}
+
+	.dataTables_info {
+		float: none !important;
+		text-align: left !important;
+	}
+
+	.dataTables_paginate {
+		float: none !important;
+		text-align: left !important;
+		margin-top: .5rem;
+	}
+
+	/* Header / branding */
+	.header-navbar .brand-text {
+		display: none;
+	}
+
+	.header-navbar .brand-logo {
+		max-height: 34px;
+	}
+
+	.user-name {
+		display: none;
+	}
+
+	.content-header-title {
+		font-size: 1.25rem;
+	}
+
+	/* Modals should fit the viewport */
+	.modal-dialog {
+		margin: .75rem auto;
+		max-width: calc(100% - 1.5rem);
+	}
+
+	.btn-lg {
+		padding: .5rem .9rem;
+		font-size: 1rem;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.app-content .content-wrapper,
+	.content-header-left,
+	.content-header-right {
+		padding-left: .75rem;
+		padding-right: .75rem;
+	}
+
+	.card-body {
+		padding: 1rem;
+	}
+
+	.content-body {
+		padding-bottom: 1rem;
+	}
+
+	/* Login / auth card uses full available width */
+	.layout-1-column .col-10 {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
 }

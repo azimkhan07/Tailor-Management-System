@@ -15,7 +15,7 @@ class CreateMeasurementPartsTable extends Migration
     {
         Schema::create('measurement_parts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cloth_type_id')->nullable()->consstrained();
+            $table->foreignId('cloth_type_id')->nullable()->constrained();
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('image')->nullable();

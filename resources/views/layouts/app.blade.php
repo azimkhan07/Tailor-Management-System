@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
         <title>{{ucfirst($title)}} - {{ucfirst(config('app.name'))}}</title>
-        <link rel="shortcut icon" href="@if(!empty(AppSettings::get('favicon'))) {{asset('storage/'.AppSettings::get('logo'))}} @else{{asset('app-assets/images/ico/favicon.ico')}} @endif" type="image/x-icon">
+        <link rel="shortcut icon" href="@if(!empty(AppSettings::get('favicon'))) {{asset('storage/'.AppSettings::get('favicon'))}} @else{{asset('app-assets/images/ico/favicon.ico')}} @endif" type="image/x-icon">
         <link rel="shortcut icon" type="image/x-icon" href="{{asset('app-assets/fonts/material-icons/material-icons.min.css')}}">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{asset('app-assets/fonts/material-icons/material-icons.min.css')}}">
@@ -17,6 +17,7 @@
         <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css')}}">
         <!-- END: Vendor CSS-->
 
         <!-- BEGIN: Theme CSS-->
@@ -105,6 +106,7 @@
      <!-- BEGIN: Page Vendor JS-->
      <script src="{{asset('app-assets/vendors/js/animation/jquery.appear.js')}}"></script>
      <script src="{{asset('app-assets/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+     <script src="{{asset('app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js')}}"></script>
      <script src="{{asset('app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js')}}"></script>
      <script src="{{asset('app-assets/vendors/js/tables/datatable/buttons.bootstrap4.min.js')}}"></script>
      <script src="{{asset('app-assets/vendors/js/tables/jszip.min.js')}}"></script>

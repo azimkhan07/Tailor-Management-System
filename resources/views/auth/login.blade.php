@@ -19,7 +19,7 @@ Enter Username And Password To Login
         </div>
     </fieldset>
     <fieldset class="form-group position-relative has-icon-left">
-        <input type="password" value="<?php if(isset($_COOKIE["userpassword"])) { echo $_COOKIE["userpassword"]; } ?>" name="password" class="form-control" id="user-password" placeholder="Enter Password" >
+        <input type="password" name="password" class="form-control" id="user-password" placeholder="Enter Password" >
         <div class="form-control-position">
             <i class="la la-key"></i>
         </div>
@@ -27,7 +27,7 @@ Enter Username And Password To Login
     <div class="form-group row">
         <div class="col-sm-6 col-12 text-center text-sm-left pr-0">
             <fieldset>
-                <input name="remember" type="checkbox" <?php if(isset($_COOKIE['user'])){echo 'checked';} ?>  id="remember-me" class="chk-remember">
+                <input name="remember" type="checkbox" id="remember-me" class="chk-remember">
                 <label for="remember-me"> Remember Me</label>
             </fieldset>
         </div>

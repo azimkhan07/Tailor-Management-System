@@ -32,14 +32,14 @@ class MeasurementPartController extends Controller
         $this->validate($request,[
             'cloth_type'=>'required',
             'name'=>'required|max:200',
-            'description'=>'max:200',
-            'image'=>'file|image|mimes:jpg,jpeg,png,gif',
+            'description'=>'nullable|max:200',
+            'image'=>'nullable|file|image|mimes:jpg,jpeg,png,gif',
         ]);
         $imageName = null;
-        if($request->image != null){
+        if($request->hasFile('image')){
             $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('storage/parts'), $imageName);
-        } 
+            $this->storeImage($request->image, $imageName);
+        }
         MeasurementPart::create([
             'cloth_type_id'=>$request->cloth_type,
             'name'=>$request->name,
@@ -76,21 +76,21 @@ class MeasurementPartController extends Controller
         $this->validate($request,[
             'cloth_type'=>'required',
             'name'=>'required|max:200',
-            'description'=>'max:200',
-            'image'=>'file|image|mimes:jpg,jpeg,png,gif',
+            'description'=>'nullable|max:200',
+            'image'=>'nullable|file|image|mimes:jpg,jpeg,png,gif',
         ]);
-        $imageName = null;
-        if($request->image != null){
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('storage/parts'), $imageName);
-        } 
-        $part = MeasurementPart::find($request->id);
-        $part->update([
+        $part = MeasurementPart::findOrFail($request->id);
+        $data = [
             'cloth_type_id'=>$request->cloth_type,
             'name'=>$request->name,
             'description'=>$request->description,
-            'image'=>$imageName,
-        ]);
+        ];
+        if($request->hasFile('image')){
+            $imageName = time().'.'.$request->image->extension();
+            $this->storeImage($request->image, $imageName);
+            $data['image'] = $imageName;
+        }
+        $part->update($data);
         $notification=array(
             'message'=>"Measurement part has been updated !!!",
             'alert-type'=>'success'
@@ -113,5 +113,19 @@ class MeasurementPartController extends Controller
             'alert-type'=>'success'
         );
         return back()->with($notification);
+    }
+
+    /**
+     * Move an uploaded image into the public storage/parts directory.
+     */
+    protected function storeImage($image, string $imageName): void
+    {
+        $directory = public_path('storage/parts');
+
+        if (! file_exists($directory)) {
+            mkdir($directory, 0775, true);
+        }
+
+        $image->move($directory, $imageName);
     }
 }

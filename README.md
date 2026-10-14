@@ -1,8 +1,19 @@
+# Tailor Shop Management System
+
+A mobile responsive Tailor Shop management system built with **Laravel 12**.
+
+## Requirements
+
+- PHP >= 8.2 (with the `pdo_mysql`, `mbstring`, `openssl`, `fileinfo` extensions)
+- Composer 2
+- MySQL / MariaDB
+- Node.js & npm (optional, only needed if you want to recompile the front-end assets)
+
 # Installation
 
 1. Download the repository or clone using this command in the terminal.
  ```
- git clone https://github.com/MusheAbdulHakim/TailorShop-Management-System.git
+ git clone https://github.com/azimkhan07/Tailor-Management-System.git
 
 ```
 

@@ -20,13 +20,20 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'password' => 'required|max:200|confirmed',
-            'avatar' =>'file|image|mimes:jpg,jpeg,png,gif',
+            'avatar' =>'nullable|file|image|mimes:jpg,jpeg,png,gif',
         ]);
+
+        $imageName = null;
+        if($request->hasFile('avatar')){
+            $imageName = time().'.'.$request->avatar->extension();
+            $this->storeAvatar($request->avatar, $imageName);
+        }
 
         User::create([
             'name'=>$request->name,
             'username'=>$request->username,
             'email'=>$request->email,
+            'avatar'=>$imageName,
             'password'=>Hash::make($request->password),
         ]);
         $notification = array(
@@ -46,19 +53,19 @@ class UserController extends Controller
             'username'=>'required',
             'name' => 'required',
             'email' => 'required',
-            'avatar' =>'file|image|mimes:jpg,jpeg,png,gif',
+            'avatar' =>'nullable|file|image|mimes:jpg,jpeg,png,gif',
         ]);
-        $imageName = null;
-        if($request->avatar != null){
-            $imageName = time().'.'.$request->avatar->extension();
-            $request->avatar->move(public_path('storage/avatars'), $imageName);
-        }
-        auth()->user()->update([
+        $data = [
             'username'=>$request->username,
             'name'=>$request->name,
             'email'=>$request->email,
-            'avatar'=>$imageName,
-        ]);
+        ];
+        if($request->hasFile('avatar')){
+            $imageName = time().'.'.$request->avatar->extension();
+            $this->storeAvatar($request->avatar, $imageName);
+            $data['avatar'] = $imageName;
+        }
+        auth()->user()->update($data);
         $notification = array(
             'message'=>"User profile updated successfully!!",
             'alert-type'=>'success'
@@ -103,5 +110,19 @@ class UserController extends Controller
         }
         
         return back()->with($notification);
+    }
+
+    /**
+     * Move an uploaded avatar into the public storage/avatars directory.
+     */
+    protected function storeAvatar($avatar, string $imageName): void
+    {
+        $directory = public_path('storage/avatars');
+
+        if (! file_exists($directory)) {
+            mkdir($directory, 0775, true);
+        }
+
+        $avatar->move($directory, $imageName);
     }
 }
