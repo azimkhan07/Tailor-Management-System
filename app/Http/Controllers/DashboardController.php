@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     public function index(){
+        if (auth()->user()->isEmployee()) {
+            return redirect()->route('my-work');
+        }
+
         $title = "Dashboard";
 
         $total_income = DB::table('incomes')->whereNull('deleted_at')->whereDate('created_at', '>', Carbon::now()->subDays(30))->sum("amount");

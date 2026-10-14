@@ -53,6 +53,8 @@
 						<th>Username</th>
 						<th>FullName</th>
 						<th>Email</th>
+						<th>Role</th>
+						<th>Linked staff</th>
 						<th>Action</th>
 					</tr>
 					</thead>
@@ -64,6 +66,8 @@
 							<td>{{$user->username}}</td>
 							<td>{{$user->name}}</td>
 							<td>{{$user->email}}</td>
+							<td><span class="badge badge-{{ $user->isAdmin() ? 'primary' : 'info' }}">{{ $user->role_label }}</span></td>
+							<td>{{ optional($user->staff)->fullname ?? '—' }}</td>
 							<td>
 								<a href="#" class="float-md-right" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 								<div class="dropdown-menu">
@@ -135,6 +139,25 @@
 						<input type="password" placeholder="repeat password" name="password_confirmation" class="form-control">
 					</div>
 
+					<label>Role: </label>
+					<div class="form-group">
+						<select name="role" id="user-role" class="form-control">
+							<option value="admin">Admin</option>
+							<option value="employee">Employee</option>
+						</select>
+					</div>
+
+					<div class="form-group" id="staff-link-wrap" style="display:none">
+						<label>Link to staff member: </label>
+						<select name="staff_id" class="form-control">
+							<option value="">— select staff —</option>
+							@foreach($staff as $person)
+								<option value="{{ $person->id }}">{{ $person->fullname }}</option>
+							@endforeach
+						</select>
+						<small class="text-muted">Employees only see the orders assigned to this staff record.</small>
+					</div>
+
 					
 
 				<div class="modal-footer">
@@ -151,5 +174,11 @@
 
 
 @push('page-js')
-
+<script>
+$(function () {
+    $('#user-role').on('change', function () {
+        $('#staff-link-wrap').toggle($(this).val() === 'employee');
+    });
+});
+</script>
 @endpush

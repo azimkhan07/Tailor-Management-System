@@ -64,6 +64,25 @@ class CustomerController extends Controller
     }
 
     /**
+     * Return the saved measurements of a customer (used to carry an old
+     * measurement forward when the same customer comes back).
+     */
+    public function measurements(Customer $customer)
+    {
+        return response()->json(
+            $customer->measurements()
+                ->take(20)
+                ->get()
+                ->map(fn ($measurement) => [
+                    'id' => $measurement->id,
+                    'title' => $measurement->title,
+                    'details' => $measurement->details,
+                    'date' => optional($measurement->created_at)->format('d M Y, h:i A'),
+                ])
+        );
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

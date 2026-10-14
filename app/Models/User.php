@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -20,6 +22,8 @@ class User extends Authenticatable
         'name',
         'username',
         'avatar',
+        'role',
+        'staff_id',
         'email',
         'password',
     ];
@@ -42,4 +46,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function staff(): BelongsTo
+    {
+        return $this->belongsTo(Staff::class);
+    }
+
+    public function leaves(): HasMany
+    {
+        return $this->hasMany(Leave::class)->latest('start_date');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isEmployee(): bool
+    {
+        return $this->role === 'employee';
+    }
+
+    public function getRoleLabelAttribute(): string
+    {
+        return ucfirst($this->role ?? 'admin');
+    }
 }

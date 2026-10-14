@@ -7,7 +7,7 @@
                 <a class="white dropdown-toggle ml-2" id="user-account" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="user-name">{{auth()->user()->name}}</span>
                 </a>
-                <div class="text-light">Super Admin</div>
+                <div class="text-light">{{ auth()->user()->role_label }}</div>
                 <div class="dropdown-menu arrow" aria-labelledby="dropdownMenuLink">
                     <a href="{{route('user-profile')}}" class="dropdown-item">
                         <i class="material-icons align-middle mr-1">person</i>
@@ -31,9 +31,20 @@
                     <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
                 </a>
             </li>
+            <li class="nav-item {{ Request::routeIs('my-work') ? 'active' : '' }}">
+                <a href="{{route('my-work')}}">
+                    <i class="material-icons">assignment</i>
+                    <span class="menu-title" data-i18n="My Work">My Work</span>
+                </a>
+            </li>
+            <li class="nav-item {{ Request::routeIs('my-calendar') ? 'active' : '' }}">
+                <a href="{{route('my-calendar')}}">
+                    <i class="material-icons">event</i>
+                    <span class="menu-title" data-i18n="Calendar">Calendar &amp; Leave</span>
+                </a>
+            </li>
 
-            
-
+            @if(auth()->user()->isAdmin())
             <li class="{{ Request::routeIs('orders') ? 'active' : '' }} nav-item">
                 <a href="{{route('orders')}}">
                     <i class="ft ft-shopping-cart"></i>
@@ -47,7 +58,7 @@
                     <span class="menu-title" data-i18n="Customers">Customers</span>
                 </a>
             </li>
-           
+
             <li class="{{ Request::routeIs('users') ? 'active' : '' }} nav-item">
                 <a href="{{route('users')}}">
                     <i class="la la-users"></i>
@@ -135,8 +146,6 @@
                             <span data-i18n="Measurement Parts">Measurement Parts</span>
                         </a>
                     </li>
-                    
-                    
                 </ul>
             </li>
 
@@ -146,6 +155,7 @@
                     <span class="menu-title" data-i18n="Setting">Settings</span>
                 </a>
             </li>
+            @endif
         </ul>
     </div>
 </div>

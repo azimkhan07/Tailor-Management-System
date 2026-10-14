@@ -57,14 +57,92 @@ return [
                 ]
             ]
         ],
-        
+
+        'notifications' => [
+            'title' => 'Notifications',
+            'descriptions' => 'WhatsApp / SMS alerts sent to customers when their order is completed.',
+            'icon' => 'fa fa-bell',
+
+            'inputs' => [
+                [
+                    'name' => 'notify_enabled',
+                    'type' => 'boolean',
+                    'label' => 'Turn notifications on',
+                    'rules' => 'required|in:0,1',
+                    'value' => '1',
+                    'hint' => 'Off = no message is ever sent.',
+                ],
+                [
+                    'name' => 'notify_driver',
+                    'type' => 'select',
+                    'label' => 'Send via',
+                    'rules' => 'required|in:log,whatsapp,sms',
+                    'value' => 'log',
+                    'options' => [
+                        'log' => 'Log file only (default, safe)',
+                        'whatsapp' => 'WhatsApp Cloud API (free tier)',
+                        'sms' => 'SMS HTTP gateway',
+                    ],
+                    'hint' => 'Log driver just writes to storage/logs/notify.log — useful for testing.',
+                ],
+                [
+                    'name' => 'notify_message',
+                    'type' => 'textarea',
+                    'label' => 'Message template',
+                    'rules' => 'nullable|max:300',
+                    'value' => 'Hello {customer}, your order {order_no} is complete. Total {amount}, balance {balance}. Please collect it. Thank you - {shop}',
+                    'hint' => 'Placeholders: {customer} {order_no} {amount} {balance} {shop}',
+                ],
+                [
+                    'name' => 'notify_whatsapp_token',
+                    'type' => 'text',
+                    'label' => 'WhatsApp access token',
+                    'rules' => 'nullable|max:300',
+                    'value' => '',
+                    'hint' => 'From https://developers.facebook.com (WhatsApp > API Setup).',
+                ],
+                [
+                    'name' => 'notify_whatsapp_phone_id',
+                    'type' => 'text',
+                    'label' => 'WhatsApp phone number id',
+                    'rules' => 'nullable|max:60',
+                    'value' => '',
+                    'hint' => 'The phone number id shown next to the token.',
+                ],
+                [
+                    'name' => 'notify_gateway_url',
+                    'type' => 'text',
+                    'label' => 'SMS gateway URL',
+                    'rules' => 'nullable|max:300',
+                    'value' => '',
+                    'hint' => 'GET url?to=&message=&sender=&apikey= — set this only if you pick the SMS driver.',
+                ],
+                [
+                    'name' => 'notify_gateway_key',
+                    'type' => 'text',
+                    'label' => 'SMS gateway key',
+                    'rules' => 'nullable|max:300',
+                    'value' => '',
+                    'hint' => 'Sent as apikey=.',
+                ],
+                [
+                    'name' => 'notify_from',
+                    'type' => 'text',
+                    'label' => 'Sender id / from',
+                    'rules' => 'nullable|max:30',
+                    'value' => '',
+                    'hint' => 'DLT sender id (SMS) or your brand name.',
+                ],
+            ]
+        ],
+
     ],
 
     // Setting page url, will be used for get and post request
     'url' => 'settings',
 
     // Any middleware you want to run on above route
-    'middleware' => [],
+    'middleware' => ['auth', 'admin'],
 
     // View settings
     'setting_page_view' => 'settings',

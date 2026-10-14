@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
@@ -18,4 +19,14 @@ class Customer extends Model
         'comment',
         'gender',
     ];
+
+    public function measurements(): HasMany
+    {
+        return $this->hasMany(Measurement::class)->latest();
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Orders::class);
+    }
 }

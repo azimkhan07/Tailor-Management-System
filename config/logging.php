@@ -47,6 +47,13 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
+        'notify' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/notify.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),

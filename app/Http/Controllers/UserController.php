@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,8 +11,9 @@ class UserController extends Controller
 {
     public function index(){
         $title = "users";
-        $users = User::get();
-        return view('users',compact('title','users'));
+        $users = User::with('staff')->get();
+        $staff = Staff::orderBy('fullname')->get();
+        return view('users',compact('title','users','staff'));
     }
 
     public function store(Request $request){
@@ -20,6 +22,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'password' => 'required|max:200|confirmed',
+            'role' => 'nullable|in:admin,employee',
+            'staff_id' => 'nullable|exists:staff,id',
             'avatar' =>'nullable|file|image|mimes:jpg,jpeg,png,gif',
         ]);
 
@@ -34,6 +38,8 @@ class UserController extends Controller
             'username'=>$request->username,
             'email'=>$request->email,
             'avatar'=>$imageName,
+            'role'=>$request->role ?: 'admin',
+            'staff_id'=>$request->role === 'employee' ? ($request->staff_id ?: null) : null,
             'password'=>Hash::make($request->password),
         ]);
         $notification = array(
