@@ -104,6 +104,20 @@
                         </div>
                         <button class="btn btn-primary" type="submit">Save status</button>
                     </form>
+
+                    @if($order->balance > 0)
+                        <hr>
+                        <form method="post" action="{{ route('order.pay', $order) }}">
+                            @csrf
+                            <label>Record a payment <small class="text-muted">(balance {{ $order->balance }})</small></label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" min="0.01" name="amount" class="form-control" placeholder="Amount received" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="submit">Add payment</button>
+                                </div>
+                            </div>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>

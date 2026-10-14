@@ -101,6 +101,17 @@
 `notify_enabled`, `notify_driver`, `notify_whatsapp_token`, `notify_whatsapp_phone_id`,
 `notify_gateway_url`, `notify_gateway_key`, `notify_from`, `shop_closed_weekdays`.
 
+### 3.8 Other essentials added
+- **Customer measurements viewer** — from the Customers list, "Measurements" opens a modal listing
+  every measurement saved for that customer (they are saved automatically from each order's
+  description), so the shop can recall a returning customer's fit.
+- **Record a payment** — an order with a balance shows an "Add payment" box on its detail page. Each
+  payment is added to `amount_paid` and written to the status timeline, so advance + balance
+  (udhaar) collection is tracked.
+- **Safer deletes** — order/customer delete now 404s on a missing id instead of erroring.
+- **Bug fix** — the Orders page used an undefined `$request` variable in the Blade view (500); it
+  now uses the `request()` helper.
+
 ---
 
 ## 4. Decisions / trade-offs
@@ -135,10 +146,12 @@
 
 ## 6. Verification checklist
 
-- [ ] `php artisan migrate` runs clean on a fresh DB.
-- [ ] Order create auto-generates a unique `order_no`, saves a measurement, shows the slip.
-- [ ] Returning customer's previous measurements appear and can fill the description.
-- [ ] Assign → employee sees it in My Work → complete → history row + timestamp + notification.
-- [ ] Calendar shows closed days; leave apply + approve/reject work.
-- [ ] Invoice downloads as PDF.
-- [ ] `php artisan test` green; every page renders 200 for admin and employee roles.
+- [x] `php artisan migrate` runs clean on a fresh DB.
+- [x] Order create auto-generates a unique `order_no`, saves a measurement, shows the slip.
+- [x] Returning customer's previous measurements appear and can fill the description.
+- [x] Assign → employee sees it in My Work → complete → history row + timestamp + notification.
+- [x] Calendar shows closed days; leave apply + approve/reject work.
+- [x] Invoice downloads as PDF.
+- [x] Record a later payment updates the balance and logs a timeline entry.
+- [x] `php artisan test` green (15 tests); every page renders for admin and employee roles
+      (`tests/Feature/PageSmokeTest.php`).

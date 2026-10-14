@@ -69,8 +69,8 @@
                             <td>
                               <a href="#" class="float-md-right" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                               <div class="dropdown-menu">
-                                  <a href="javascript:void(0)" data-id="{{$customer->id}}" class="dropdown-item">
-                                  <i class="la la-edit"></i>Edit
+                                  <a href="javascript:void(0)" data-id="{{$customer->id}}" data-name="{{$customer->fullname}}" class="dropdown-item measurementbtn">
+                                  <i class="la la-pencil-square-o"></i>Measurements
                                 </a>
                                   <div class="dropdown-divider"></div>
                                   <a data-id="{{$customer->id}}" href="javascript:void(0)" aria-haspopup="true" data-toggle="modal"  aria-expanded="true" class="dropdown-item deletebtn">
@@ -154,10 +154,66 @@
         </form>
     </div>
 </div>
-</div>                    
+</div>
+
+<!-- customer measurements modal starts here -->
+<div class="modal fade text-left" id="customer-measurements" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Measurements <span class="text-muted" id="cm-customer-name"></span></h4>
+                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="cm-list">
+                    <p class="text-muted mb-0">Loading…</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- customer measurements modal ends here -->
 @endsection
 
 
 @push('page-js')
+<script>
+$(function () {
+    $('.measurementbtn').on('click', function () {
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        $('#cm-customer-name').text('— ' + name);
+        $('#cm-list').html('<p class="text-muted mb-0">Loading…</p>');
+        $('#customer-measurements').modal('show');
 
+        $.getJSON('{{ route('customers') }}/' + id + '/measurements')
+            .done(function (rows) {
+                if (!rows.length) {
+                    $('#cm-list').html('<p class="text-muted mb-0">No measurements saved for this customer yet. They are saved automatically when an order is created with a description.</p>');
+                    return;
+                }
+                var html = '<div class="list-group">';
+                rows.forEach(function (m) {
+                    html += '<div class="list-group-item">'
+                        + '<div class="d-flex justify-content-between">'
+                        + '<strong>' + $('<div>').text(m.title).html() + '</strong>'
+                        + '<small class="text-muted">' + $('<div>').text(m.date || '').html() + '</small>'
+                        + '</div>'
+                        + '<div style="white-space:pre-line;margin-top:6px">' + $('<div>').text(m.details || '—').html() + '</div>'
+                        + '</div>';
+                });
+                html += '</div>';
+                $('#cm-list').html(html);
+            })
+            .fail(function () {
+                $('#cm-list').html('<p class="text-danger mb-0">Could not load measurements.</p>');
+            });
+    });
+});
+</script>
 @endpush

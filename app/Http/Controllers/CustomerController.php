@@ -102,7 +102,7 @@ class CustomerController extends Controller
      */
     public function destroy(Request $request)
     {
-        $customer = Customer::find($request->id);
+        $customer = Customer::findOrFail($request->id);
         $customer->delete();
         $notification = array(
             'message'=>"Customer deleted successfully!!!",

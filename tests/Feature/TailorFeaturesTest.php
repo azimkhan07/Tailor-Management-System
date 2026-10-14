@@ -211,4 +211,21 @@ class TailorFeaturesTest extends TestCase
         $this->assertStringContainsString($order->order_no, $notifier->message($order));
         $this->assertStringContainsString('wa.me', $notifier->whatsappLink($order));
     }
+
+    public function test_recording_a_payment_updates_balance_and_history(): void
+    {
+        $admin = $this->admin();
+        $order = $this->makeOrder(['amount_charged' => 500, 'amount_paid' => 200]);
+
+        $this->actingAs($admin)
+            ->post("/orders/{$order->id}/pay", ['amount' => 100])
+            ->assertRedirect();
+
+        $this->assertSame(300.0, (float) $order->fresh()->amount_paid);
+        $this->assertSame(200.0, $order->fresh()->balance);
+        $this->assertDatabaseHas('order_status_histories', [
+            'order_id' => $order->id,
+            'notes' => 'Payment received: 100. Balance: 200',
+        ]);
+    }
 }

@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
     // (authorisation is enforced inside OrdersController).
     Route::get('orders/{order}', [OrdersController::class, 'show'])->name('order.show');
     Route::post('orders/{order}/status', [OrdersController::class, 'updateStatus'])->name('order.status');
+    Route::post('orders/{order}/pay', [OrdersController::class, 'addPayment'])->name('order.pay');
     Route::get('orders/{order}/slip', [OrdersController::class, 'slip'])->name('order.slip');
     Route::get('orders/{order}/invoice', [OrdersController::class, 'invoice'])->name('order.invoice');
 

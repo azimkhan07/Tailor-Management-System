@@ -153,6 +153,33 @@ class OrdersController extends Controller
     }
 
     /**
+     * Record a (further) payment against the order and log it in the timeline.
+     */
+    public function addPayment(Request $request, Orders $order)
+    {
+        $this->authorizeOrder($order);
+
+        $request->validate([
+            'amount' => 'required|numeric|min:0.01',
+        ]);
+
+        $order->amount_paid = (float) $order->amount_paid + (float) $request->amount;
+        $order->save();
+
+        $order->history()->create([
+            'from_status' => $order->status,
+            'status' => $order->status,
+            'user_id' => auth()->id(),
+            'notes' => 'Payment received: ' . $request->amount . '. Balance: ' . $order->balance,
+        ]);
+
+        return back()->with([
+            'message' => "Payment recorded for {$order->order_no}. Balance is now {$order->balance}.",
+            'alert-type' => 'success',
+        ]);
+    }
+
+    /**
      * Printable order slip (created when the order is placed).
      */
     public function slip(Orders $order)
@@ -183,7 +210,7 @@ class OrdersController extends Controller
      */
     public function destroy(Request $request)
     {
-        $order = Orders::find($request->id);
+        $order = Orders::findOrFail($request->id);
         $order->delete();
 
         return back()->with([

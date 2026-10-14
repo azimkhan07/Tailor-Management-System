@@ -130,7 +130,7 @@
 							<optgroup>
 								@if (!empty($customers->count()))
 									@foreach ($customers as $customer)
-									<option value="{{$customer->id}}" @if($request->get('customer') == $customer->id) selected @endif>{{$customer->fullname}}</option>
+									<option value="{{$customer->id}}" @if(request('customer') == $customer->id) selected @endif>{{$customer->fullname}}</option>
 									@endforeach
 								@endif
 							</optgroup>
@@ -285,7 +285,7 @@ $(function () {
     });
 
     // Prefill the "add order" modal from an employee/order deep link.
-    @if($request->get('new'))
+    @if(request('new'))
         $('#add-order').modal('show');
     @endif
 });
